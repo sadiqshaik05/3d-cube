@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>3D Love Memory Cube</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Segoe UI',sans-serif;
+}
+
+body{
+  height:100vh;
+  overflow:hidden;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:linear-gradient(120deg,#0f0c29,#302b63,#24243e);
+}
+
+/* ===== Animated Star Background ===== */
+body::before{
+  content:"";
+  position:absolute;
+  inset:-100%;
+  background:
+    radial-gradient(circle,rgba(255,255,255,.08) 2px,transparent 2px);
+  background-size:70px 70px;
+  animation:stars 45s linear infinite;
+}
+
+@keyframes stars{
+  from{transform:translate(0,0);}
+  to{transform:translate(-300px,-300px);}
+}
+
+/* ===== Scene ===== */
+#scene{
+  width:320px;
+  height:320px;
+  perspective:1100px;
+  z-index:2;
+}
+
+/* ===== Cube ===== */
+#cube{
+  width:100%;
+  height:100%;
+  position:relative;
+  transform-style:preserve-3d;
+  animation:spin 12s linear infinite;
+}
+
+/* ===== Faces ===== */
+.face{
+  position:absolute;
+  width:320px;
+  height:320px;
+  border-radius:22px;
+  background-size:cover;
+  background-position:center;
+  background-repeat: no-repeat;
+  border:2px solid rgba(255,255,255,.3);
+  box-shadow:0 0 35px rgba(255,0,255,.8);
+  display:flex;
+  align-items:flex-end;
+  overflow:hidden;
+}
+
+/* ===== Quote Animation ===== */
+.quote{
+  width:100%;
+  padding:16px;
+  text-align:center;
+  color:#fff;
+  font-size:16px;
+  background:rgba(0,0,0,.45);
+  backdrop-filter:blur(8px);
+  animation:quoteAnim 4s ease-in-out infinite;
+}
+
+@keyframes quoteAnim{
+  0%{opacity:0;transform:translateY(20px);}
+  20%{opacity:1;transform:translateY(0);}
+  80%{opacity:1;}
+  100%{opacity:0;transform:translateY(-10px);}
+}
+
+/* ===== Positioning ===== */
+#front{transform:translateZ(160px);}
+#back{transform:rotateY(180deg) translateZ(160px);}
+#left{transform:rotateY(-90deg) translateZ(160px);}
+#right{transform:rotateY(90deg) translateZ(160px);}
+#top{transform:rotateX(90deg) translateZ(160px);}
+#bottom{transform:rotateX(-90deg) translateZ(160px);}
+
+/* ===== Cube Spin ===== */
+@keyframes spin{
+  from{transform:rotateX(-20deg) rotateY(0);}
+  to{transform:rotateX(-20deg) rotateY(360deg);}
+}
+
+/* ===== Audio ===== */
+audio{
+  position:fixed;
+  bottom:15px;
+  left:50%;
+  transform:translateX(-50%);
+  opacity:.9;
+}
+</style>
+</head>
+
+<body>
+
+<div id="scene">
+  <div id="cube">
+
+    <div class="face" id="front" style="background-image:url('https://mxp-media.ilnmedia.com/media/content/2025/May/main-image-credit---Hania-Aamir-Instagram_6819b9278523c.jpeg')">
+      <div class="quote">“Every moment with you is magic 💖”</div>
+    </div>
+
+    <div class="face" id="back" style="background-image:url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbBvsKLV9QT1-14q5SFM2WXv1Y0MRIHNVt5w&s')">
+      <div class="quote">“Love lives in memories ✨”</div>
+    </div>
+
+    <div class="face" id="left" style="background-image:url('https://i.pinimg.com/736x/b9/c6/0a/b9c60af2c40482e8c0f7712bae9d8dc2.jpg')">
+      <div class="quote">“Your smile is my favorite view 😊”</div>
+    </div>
+
+    <div class="face" id="right" style="background-image:url('https://humenglish.com/wp-content/uploads/2024/04/haania-amir.jpg')">
+      <div class="quote">“Some bonds never fade ❤️”</div>
+    </div>
+
+    <div class="face" id="top" style="background-image:url('https://pk.sapphireonline.pk/on/demandware.static/-/Sites-Sapphire-Library/default/dwa248abb3/images/Editorials/21st-march-25-Story-Hania.jpg')">
+      <div class="quote">“Dreams feel real with you 🌙”</div>
+    </div>
+
+    <div class="face" id="bottom" style="background-image:url('https://d34080pnh6e62j.cloudfront.net/images/newspost/thumbs/1727255372hania-amir-husband-age-family-height.webp')">
+      <div class="quote">“Forever starts here 💫”</div>
+    </div>
+
+  </div>
+</div>
+
+<audio autoplay controls loop>
+  <source src="./Meri Zindagi Hai Tu.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+/* ===== Mouse + Touch Rotation ===== */
+const cube=document.getElementById("cube");
+let isDown=false,startX,startY,rotX=-20,rotY=0;
+
+/* Mouse */
+document.addEventListener("mousedown",e=>{
+  isDown=true;
+  startX=e.clientX;
+  startY=e.clientY;
+  cube.style.animation="none";
+});
+
+document.addEventListener("mouseup",()=>isDown=false);
+
+document.addEventListener("mousemove",e=>{
+  if(!isDown) return;
+  rotY+=(e.clientX-startX)*0.4;
+  rotX-=(e.clientY-startY)*0.4;
+  cube.style.transform=`rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+  startX=e.clientX;
+  startY=e.clientY;
+});
+
+/* Touch */
+document.addEventListener("touchstart",e=>{
+  isDown=true;
+  startX=e.touches[0].clientX;
+  startY=e.touches[0].clientY;
+  cube.style.animation="none";
+});
+
+document.addEventListener("touchend",()=>isDown=false);
+
+document.addEventListener("touchmove",e=>{
+  if(!isDown) return;
+  rotY+=(e.touches[0].clientX-startX)*0.3;
+  rotX-=(e.touches[0].clientY-startY)*0.3;
+  cube.style.transform=`rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+  startX=e.touches[0].clientX;
+  startY=e.touches[0].clientY;
+});
+</script>
+
+</body>
+</html>
