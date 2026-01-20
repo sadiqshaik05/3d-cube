@@ -128,7 +128,7 @@ audio{
 /* ===== Titles ===== */
 .title{
   position:absolute;
-  top:40px;
+  top:10px;
   width:100%;
   text-align:center;
   font-size:30px;
@@ -141,10 +141,10 @@ audio{
 
 .title1{
   position:absolute;
-  top:180px;
+  top:150px;
   width:100%;
   text-align:center;
-  font-size:25px;
+  font-size:30px;
   font-weight:600;
   color:#fff;
   letter-spacing:1px;
@@ -153,10 +153,10 @@ audio{
 }
 .title2{
   position:absolute;
-  bottom:150px;
+  bottom:250px;
   width:100%;
   text-align:center;
-  font-size:25px;
+  font-size:30px;
   font-weight:600;
   color:#fff;
   letter-spacing:1px;
@@ -166,7 +166,7 @@ audio{
 /* ===== Contact Section ===== */
 .contact-section {
   position: fixed;
-  bottom:75px; /* Above audio player */
+  bottom:100px; /* Above audio player */
   left:50%;
   transform:translateX(-50%);
   background: rgba(0,0,0,0.65);
@@ -220,28 +220,57 @@ audio{
 }
 
 /* ===== Mobile adjustments ===== */
+/* ===== Mobile Responsiveness ===== */
 @media(max-width:600px){
+  /* Shrink cube for small screens */
+  #scene{
+    width:90vw;
+    height:90vw;
+    max-width:300px;
+    max-height:300px;
+  }
+
+  /* Adjust cube face Z-distance proportionally */
+  #front, #back, #left, #right, #top, #bottom {
+    transform: translateZ(150px); /* smaller cube depth */
+  }
+
+  /* Titles scaling */
   .title{
-    font-size:22px;
-    top:25px;
+    font-size:18px;
+    top:15px;
+    padding:0 10px;
   }
   .title1{
-    font-size:16px;
+    font-size:14px;
+    top:60px;
+  }
+  .title2{
+    font-size:14px;
     bottom:180px;
   }
-  .contact-section {
-    padding:10px 15px;
-    gap:10px;
+
+  /* Audio scaling */
+  audio{
+    width:80%;
   }
-  .profile-img {
-    width:50px;
-    height:50px;
+
+  /* Contact section adjustments */
+  .contact-section{
+    bottom:60px;
+    padding:8px 10px;
+    gap:8px;
   }
-  .contact-item {
-    font-size:13px;
-    padding:6px 10px;
+  .profile-img{
+    width:45px;
+    height:45px;
+  }
+  .contact-item{
+    font-size:12px;
+    padding:5px 8px;
   }
 }
+
 </style>
 </head>
 
