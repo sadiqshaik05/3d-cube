@@ -2,368 +2,312 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>3D Love Memory Cube</title>
 
-<!-- Font Awesome for social icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
-/* ===== Global ===== */
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:'Segoe UI',sans-serif;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
 }
 
-body{
-  height:100vh;
-  overflow:hidden;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  background:linear-gradient(120deg,#0f0c29,#302b63,#24243e);
-  touch-action:none;
+body {
+  min-height: 100vh;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: center;
+  padding: 20px 15px;
+  background: linear-gradient(120deg, #0f0c29, #302b63, #24243e);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  color: #fff;
   position: relative;
-  padding-bottom: 120px; /* space for contact + audio */
 }
 
-/* ===== Fixed Star Background ===== */
-body::before{
-  content:"";
-  position:fixed;
-  top:0;
-  left:0;
-  width:200%;
-  height:200%;
-  background: radial-gradient(circle, rgba(255,255,255,.08) 2px, transparent 2px);
-  background-size:70px 70px;
-  animation:stars 60s linear infinite;
-  z-index:0;
+/* ===== Animated Stars ===== */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle, rgba(255,255,255,0.08) 2px, transparent 2px);
+  background-size: 80px 80px;
+  animation: stars 45s linear infinite;
+  z-index: -1;
 }
 
-@keyframes stars{
-  from{transform:translate(0,0);}
-  to{transform:translate(-300px,-300px);}
-}
-
-/* ===== Scene ===== */
-#scene{
-  width:85vw;
-  height:85vw;
-  max-width:420px;
-  max-height:420px;
-  perspective:1300px;
-  z-index:2;
-}
-
-/* ===== Cube ===== */
-#cube{
-  width:100%;
-  height:100%;
-  position:relative;
-  transform-style:preserve-3d;
-  animation:spin 12s linear infinite;
-}
-
-/* ===== Faces ===== */
-.face{
-  position:absolute;
-  width:100%;
-  height:100%;
-  border-radius:22px;
-  background-size:cover;
-  background-position:center;
-  background-repeat:no-repeat;
-  border:2px solid rgba(255,255,255,.3);
-  box-shadow:0 0 35px rgba(255,0,255,.8);
-  display:flex;
-  align-items:flex-end;
-  overflow:hidden;
-}
-
-/* ===== Quote ===== */
-.quote{
-  width:100%;
-  padding:16px;
-  text-align:center;
-  color:#fff;
-  font-size:16px;
-  background:rgba(0,0,0,.45);
-  backdrop-filter:blur(8px);
-  animation:quoteAnim 4s ease-in-out infinite;
-}
-
-@keyframes quoteAnim{
-  0%{opacity:0;transform:translateY(20px);}
-  20%{opacity:1;transform:translateY(0);}
-  80%{opacity:1;}
-  100%{opacity:0;transform:translateY(-10px);}
-}
-
-/* ===== Face Positioning ===== */
-#front{transform:translateZ(210px);}
-#back{transform:rotateY(180deg) translateZ(210px);}
-#left{transform:rotateY(-90deg) translateZ(210px);}
-#right{transform:rotateY(90deg) translateZ(210px);}
-#top{transform:rotateX(90deg) translateZ(210px);}
-#bottom{transform:rotateX(-90deg) translateZ(210px);}
-
-/* ===== Cube Spin ===== */
-@keyframes spin{
-  from{transform:rotateX(-20deg) rotateY(0);}
-  to{transform:rotateX(-20deg) rotateY(360deg);}
-}
-
-/* ===== Audio ===== */
-audio{
-  position:fixed;
-  bottom:15px;
-  left:50%;
-  transform:translateX(-50%);
-  opacity:.9;
-  z-index:10;
+@keyframes stars {
+  from { transform: translate(0,0); }
+  to   { transform: translate(-300px,-300px); }
 }
 
 /* ===== Titles ===== */
-.title{
-  position:absolute;
-  top:20px;
-  width:100%;
-  text-align:center;
-  font-size:15px;
-  font-weight:600;
-  color:#fff;
-  letter-spacing:1px;
-  z-index:3;
-  text-shadow:0 0 15px rgba(255,0,255,.8);
-}
+.title { font-size: 24px; font-weight: bold; margin-bottom: 15px; max-width:95%; }
+.title1 { font-size: 20px; color:#ffd1ff; margin-bottom:10px; }
+.title2 { font-size: 20px; color:#ffb6b6; margin-bottom:40px; }
 
-.title1{
-  position:absolute;
-  top:80px;
-  width:100%;
-  text-align:center;
-  font-size:15px;
-  font-weight:600;
-  color:#fff;
-  letter-spacing:1px;
-  z-index:3;
-  text-shadow:0 0 15px rgba(255,0,255,.8);
-}
-.title2{
-  position:absolute;
-  bottom:170px;
-  width:100%;
-  text-align:center;
-  font-size:15px;
-  font-weight:600;
-  color:#fff;
-  letter-spacing:1px;
-  z-index:3;
-  text-shadow:0 0 15px rgba(255,0,255,.8);
-}
-/* ===== Contact Section ===== */
-.contact-section {
-  position: fixed;
-  bottom:80px; /* Above audio player */
-  left:50%;
-  transform:translateX(-50%);
-  background: rgba(0,0,0,0.65);
-  padding: 5px 15px;
-  border-radius: 18px;
+/* ===== Scene & Cube ===== */
+#scene {
+  width: 300px;
+  height: 300px;
+  perspective: 1200px;
   display: flex;
-  flex-direction: row;
   align-items: center;
-  gap: 15px;
-  backdrop-filter: blur(8px);
-  box-shadow: 0 0 25px rgba(255,0,255,0.6);
-  z-index:10;
+  justify-content: center;
 }
 
-.profile-img {
-  width:60px;
-  height:60px;
-  border-radius:50%;
-  border:2px solid #ff00ff;
-  object-fit:cover;
-  box-shadow:0 0 15px rgba(255,0,255,.8);
+/* ===== Cube ===== */
+#cube {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  animation: spin 12s linear infinite;
 }
 
-.contact-links {
+/* ===== Faces ===== */
+.face {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  border-radius: 20px;
+  background-size: cover;
+  background-position: center;
+  border: 2px solid rgba(255,255,255,0.3);
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+
+  /* Neon Glow */
+  box-shadow:
+    0 0 15px rgba(255, 0, 255, 0.6),
+    0 0 30px rgba(255, 0, 255, 0.4),
+    inset 0 0 15px rgba(255,255,255,0.15);
+  animation: neonPulse 3s ease-in-out infinite alternate;
+}
+
+@keyframes neonPulse {
+  from {
+    box-shadow:
+      0 0 10px rgba(255, 0, 255, 0.5),
+      0 0 20px rgba(255, 0, 255, 0.3);
+  }
+  to {
+    box-shadow:
+      0 0 20px rgba(255, 0, 255, 0.9),
+      0 0 40px rgba(255, 0, 255, 0.6);
+  }
+}
+
+/* ===== Quotes ===== */
+.quote {
+  width: 100%;
+  padding: 14px;
+  font-size: 14px;
+  background: rgba(0,0,0,0.45);
+  backdrop-filter: blur(6px);
+  animation: quoteAnim 4s ease-in-out infinite;
+}
+
+@keyframes quoteAnim {
+  0%   { opacity: 0; transform: translateY(20px); }
+  20%  { opacity: 1; transform: translateY(0); }
+  80%  { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-10px); }
+}
+
+/* ===== Cube Positions ===== */
+#front  { transform: translateZ(150px); }
+#back   { transform: rotateY(180deg) translateZ(150px); }
+#left   { transform: rotateY(-90deg) translateZ(150px); }
+#right  { transform: rotateY(90deg) translateZ(150px); }
+#top    { transform: rotateX(90deg) translateZ(150px); }
+#bottom { transform: rotateX(-90deg) translateZ(150px); }
+
+@keyframes spin {
+  from { transform: rotateX(-20deg) rotateY(0); }
+  to   { transform: rotateX(-20deg) rotateY(360deg); }
+}
+
+/* ===== Floating Hearts ===== */
+.hearts {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.heart {
+  position: absolute;
+  color: #ff4fd8;
+  font-size: 18px;
+  opacity: 0.8;
+  animation: floatUp linear infinite;
+  text-shadow: 0 0 10px #ff4fd8, 0 0 20px #ff8be5;
+}
+
+@keyframes floatUp {
+  from { transform: translateY(110vh) scale(0.6); opacity:0; }
+  10% { opacity:1; }
+  to { transform: translateY(-10vh) scale(1.2); opacity:0; }
+}
+
+/* ===== Audio ===== */
+audio { margin-top:15px; max-width:90%; }
+
+/* ===== CONTACT SECTION ===== */
+.contact-section{
+  margin-top:40px;
+  padding:25px 30px;
+  border-radius:20px;
+  border:2px solid rgba(0,255,255,0.7);
+  box-shadow:
+    0 0 20px rgba(0,255,255,0.7),
+    inset 0 0 15px rgba(255,255,255,0.15);
+  background:rgba(0,0,0,0.35);
   display:flex;
-  flex-direction: row;
-  gap:10px;
+  flex-direction:column;
+  align-items:center;
+  gap:15px;
+  backdrop-filter: blur(8px);
 }
 
-.contact-item {
+.profile-img{
+  width:90px;
+  height:90px;
+  border-radius:50%;
+  object-fit:cover;
+  border:3px solid #00ffff;
+  box-shadow:0 0 20px #00ffff;
+}
+
+.contact-links{
+  display:flex;
+  gap:15px;
+}
+
+.contact-item{
   text-decoration:none;
   color:#fff;
-  background: linear-gradient(120deg,#ff00ff,#ff0080);
-  padding:8px 12px;
-  border-radius:12px;
-  font-weight:600;
-  display:flex;
-  align-items:center;
-  gap:6px;
-  transition: all 0.3s ease;
+  border:2px solid #00ffff;
+  padding:8px 16px;
+  border-radius:25px;
   font-size:14px;
+  box-shadow:0 0 15px #00ffff;
+  transition:0.3s;
 }
 
-.contact-item i {
-  font-size:16px;
+.contact-item:hover{
+  background:#00ffff;
+  color:#000;
+  box-shadow:0 0 30px #00ffff;
 }
 
-.contact-item:hover {
-  transform:translateY(-2px);
-  box-shadow:0 0 15px rgba(255,0,255,0.7);
-}
+/* ===== Mobile Fix ===== */
+@media (max-width: 500px) {
+  #scene { width:220px; height:220px; }
+  .face { width:220px; height:220px; }
 
-/* ===== Mobile adjustments ===== */
-/* ===== Mobile Responsiveness ===== */
-@media(max-width:600px){
-  /* Shrink cube for small screens */
-  #scene{
-    width:90vw;
-    height:90vw;
-    max-width:300px;
-    max-height:300px;
-  }
+  #front  { transform: translateZ(110px); }
+  #back   { transform: rotateY(180deg) translateZ(110px); }
+  #left   { transform: rotateY(-90deg) translateZ(110px); }
+  #right  { transform: rotateY(90deg) translateZ(110px); }
+  #top    { transform: rotateX(90deg) translateZ(110px); }
+  #bottom { transform: rotateX(-90deg) translateZ(110px); }
 
-  /* Adjust cube face Z-distance proportionally */
-  #front, #back, #left, #right, #top, #bottom {
-    transform: translateZ(150px); /* smaller cube depth */
-  }
+  .title { font-size:18px; }
+  .title1,.title2 { font-size:16px; }
 
-  /* Titles scaling */
-  .title{
-    font-size:20px;
-    top:35px;
-    padding:0 10px;
-  }
-  .title1{
-    font-size:14px;
-    top:60px;
-  }
-  .title2{
-    font-size:14px;
-    bottom:180px;
-  }
-
-  /* Audio scaling */
-  audio{
-    width:80%;
-  }
-
-  /* Contact section adjustments */
-  .contact-section{
-    bottom:60px;
-    padding:8px 10px;
-    gap:8px;
-  }
-  .profile-img{
-    width:45px;
-    height:45px;
-  }
-  .contact-item{
-    font-size:12px;
-    padding:5px 8px;
+  .contact-links{
+    flex-direction:column;
   }
 }
-
 </style>
 </head>
 
 <body>
-<div class="title">
-  💖 This Is For You Apki Pics Nai Tha Isliye Hania Amir Ke Pics Rakhdiya Kyu Ki Jab Bhi Hania Ku Dekhtu Aphe Nazar Aatey. 💖
-</div>
 
-<div class="title1">
-  Click and Drag to rotate the cube with your Finger/Mouse
-</div>
-<div class="title2">
-  Message karke batana kaisa laga.😊 Aur apke Acche wale Pics Zaroor Send Karna.
-</div>
+<div class="title">💖 This is for you! Apki Pics Nai Tha Isliye Hania Amir Ke Pics Rakhdiya Kyu ke Mai Jab Bhi Hania Ku Dekhtu Aphe Nazar Aatey💖</div>
+<div class="title1">Click and Drag To Rotate The Cube With Finger or Mouse</div>
+<div class="title2">Message Me and Tell me Kaisa Laga Apku Pyaar Se Bhara Hua Website 😊</div>
 
 <div id="scene">
   <div id="cube">
-    <div class="face" id="front" style="background-image:url('https://mxp-media.ilnmedia.com/media/content/2025/May/main-image-credit---Hania-Aamir-Instagram_6819b9278523c.jpeg')">
-      <div class="quote">“Every moment with you is magic 💖”</div>
-    </div>
-    <div class="face" id="back" style="background-image:url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbBvsKLV9QT1-14q5SFM2WXv1Y0MRIHNVt5w&s')">
-      <div class="quote">“Love lives in memories ✨”</div>
-    </div>
-    <div class="face" id="left" style="background-image:url('https://i.pinimg.com/736x/b9/c6/0a/b9c60af2c40482e8c0f7712bae9d8dc2.jpg')">
-      <div class="quote">“Your smile is my favorite view 😊”</div>
-    </div>
-    <div class="face" id="right" style="background-image:url('https://humenglish.com/wp-content/uploads/2024/04/haania-amir.jpg')">
-      <div class="quote">“Some bonds never fade ❤️”</div>
-    </div>
-    <div class="face" id="top" style="background-image:url('https://pk.sapphireonline.pk/on/demandware.static/-/Sites-Sapphire-Library/default/dwa248abb3/images/Editorials/21st-march-25-Story-Hania.jpg')">
-      <div class="quote">“Dreams feel real with you 🌙”</div>
-    </div>
-    <div class="face" id="bottom" style="background-image:url('https://d34080pnh6e62j.cloudfront.net/images/newspost/thumbs/1727255372hania-amir-husband-age-family-height.webp')">
-      <div class="quote">“Forever starts here 💫”</div>
-    </div>
+    <div class="face" id="front" style="background-image:url('https://mxp-media.ilnmedia.com/media/content/2025/May/main-image-credit---Hania-Aamir-Instagram_6819b9278523c.jpeg')"><div class="quote">Every moment with you is magic 💖</div></div>
+    <div class="face" id="back" style="background-image:url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbBvsKLV9QT1-14q5SFM2WXv1Y0MRIHNVt5w&s')"><div class="quote">Love lives in memories ✨</div></div>
+    <div class="face" id="left" style="background-image:url('https://i.pinimg.com/736x/b9/c6/0a/b9c60af2c40482e8c0f7712bae9d8dc2.jpg')"><div class="quote">Your smile is my favorite view 😊</div></div>
+    <div class="face" id="right" style="background-image:url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjyRiCPYle6-_2t0mwQldZYHkE4CVnRUXo_jfcAtZMk-HO2VVkWUD1cfj9EosNCeh53ZPzlCki4XI5rruUHuaEDx6Zh01drmcl1pd5KGaa2lw1UDTyrkF2YPhRZKVmRkyihbbNsny_COaWW8Mh4kaVLgj811BdcJJzhcXU4XBD2kVV9-ETP8-PcrkGU/s1349/Hania%20Aamir%20hd%20wallpapers.jpg')"><div class="quote">Some bonds never fade ❤️</div></div>
+    <div class="face" id="top" style="background-image:url('https://pk.sapphireonline.pk/on/demandware.static/-/Sites-Sapphire-Library/default/dwa248abb3/images/Editorials/21st-march-25-Story-Hania.jpg')"><div class="quote">Dreams feel real with you 🌙</div></div>
+    <div class="face" id="bottom" style="background-image:url('https://d34080pnh6e62j.cloudfront.net/images/newspost/thumbs/1727255372hania-amir-husband-age-family-height.webp')"><div class="quote">Forever starts here 💫</div></div>
   </div>
 </div>
 
-<!-- ===== Audio ===== -->
-<audio autoplay controls loop>
+<div class="hearts">
+  <span class="heart" style="left:10%; animation-duration:12s;">💖</span>
+  <span class="heart" style="left:30%; animation-duration:9s;">💗</span>
+  <span class="heart" style="left:50%; animation-duration:14s;">💞</span>
+  <span class="heart" style="left:70%; animation-duration:11s;">❤️</span>
+  <span class="heart" style="left:85%; animation-duration:10s;">💕</span>
+</div>
+
+<audio controls loop>
   <source src="./Meri Zindagi Hai Tu.mp3" type="audio/mpeg">
 </audio>
 
-<!-- ===== Contact Section ===== -->
-<div class="contact-section">
-    <img src="./ss.jpeg" alt="Sadiq Shaik" class="profile-img">
-    <div class="contact-links">
-        <a href="https://wa.me/919703127159" class="contact-item"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>
-        <a href="https://www.instagram.com/mr_sadiqshaik_05/" class="contact-item"><i class="fa-brands fa-instagram"></i> Instagram</a>
-    </div>
+<!-- ===== CONTACT SECTION ===== -->
+<div id="container2" class="contact-section">
+  <img src="./ss.jpeg" alt="Sadiq Shaik" class="profile-img">
+
+  <div class="contact-links">
+    <a href="https://wa.me/919703127159" class="contact-item">
+      <i class="fa-brands fa-whatsapp"></i> WhatsApp
+    </a>
+
+    <a href="https://www.instagram.com/mr_sadiqshaik_05/" class="contact-item">
+      <i class="fa-brands fa-instagram"></i> Instagram
+    </a>
+  </div>
 </div>
 
 <script>
-/* ===== Cube Dragging ===== */
 const cube = document.getElementById("cube");
-let isDown = false, startX, startY, rotX = -20, rotY = 0;
+let isDown=false,startX,startY,rotX=-20,rotY=0;
 
-/* Mouse */
-document.addEventListener("mousedown", e => {
-  isDown = true;
-  startX = e.clientX;
-  startY = e.clientY;
-  cube.style.animation = "none";
+document.addEventListener("mousedown",e=>{
+  isDown=true; startX=e.clientX; startY=e.clientY;
+  cube.style.animation="none";
 });
-
-document.addEventListener("mouseup", () => isDown = false);
-
-document.addEventListener("mousemove", e => {
+document.addEventListener("mouseup",()=>isDown=false);
+document.addEventListener("mousemove",e=>{
   if(!isDown) return;
-  rotY += (e.clientX - startX) * 0.4;
-  rotX -= (e.clientY - startY) * 0.4;
-  cube.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg)`;
-  startX = e.clientX;
-  startY = e.clientY;
+  rotY+=(e.clientX-startX)*0.4;
+  rotX-=(e.clientY-startY)*0.4;
+  cube.style.transform=`rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+  startX=e.clientX; startY=e.clientY;
 });
 
 /* Touch */
-document.addEventListener("touchstart", e => {
-  isDown = true;
-  startX = e.touches[0].clientX;
-  startY = e.touches[0].clientY;
-  cube.style.animation = "none";
+document.addEventListener("touchstart",e=>{
+  isDown=true;
+  startX=e.touches[0].clientX;
+  startY=e.touches[0].clientY;
+  cube.style.animation="none";
 });
-
-document.addEventListener("touchend", () => isDown = false);
-
-document.addEventListener("touchmove", e => {
+document.addEventListener("touchend",()=>isDown=false);
+document.addEventListener("touchmove",e=>{
   if(!isDown) return;
-  rotY += (e.touches[0].clientX - startX) * 0.3;
-  rotX -= (e.touches[0].clientY - startY) * 0.3;
-  cube.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg)`;
-  startX = e.touches[0].clientX;
-  startY = e.touches[0].clientY;
+  rotY+=(e.touches[0].clientX-startX)*0.3;
+  rotX-=(e.touches[0].clientY-startY)*0.3;
+  cube.style.transform=`rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+  startX=e.touches[0].clientX;
+  startY=e.touches[0].clientY;
 });
 </script>
 
